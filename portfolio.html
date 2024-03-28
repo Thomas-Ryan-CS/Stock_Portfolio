@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Portfolio</title>
+</head>
+<body>
+    <h1>Stock Portfolio</h1>
+    
+    <!-- Form for adding a stock -->
+    <form method="post" action="{% url 'add_stock' %}">
+        {% csrf_token %}
+        <label for="ticker">Ticker:</label>
+        <input type="text" id="ticker" name="ticker">
+        
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity">
+        
+        <button type="submit">Add</button>
+    </form>
+    
+    <!-- Display error message if any -->
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+    {% endif %}
+    
+    <!-- Display portfolio table -->
+    <table border="1">
+        <tr>
+            <th>Ticker</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Value</th>
+            <th>Action</th>
+        </tr>
+        {% for row in portfolio_df %}
+        <tr>
+            <td>{{ row.Ticker }}</td>
+            <td>{{ row.Quantity }}</td>
+            <td>{{ row.Price }}</td>
+            <td>{{ row.Value }}</td>
+            <td><a href="{% url 'delete_stock' row.Ticker %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
